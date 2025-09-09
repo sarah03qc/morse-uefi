@@ -1,0 +1,22 @@
+# builds y objetos
+build/
+dist/
+*.o
+*.obj
+*.so
+*.bin
+*.log
+
+# imagen/variables de OVMF y disco
+*.fd
+*.vhd
+
+# montajes locales
+mnt/
+
+# QEMU/varios
+*.EFI
+
+# editor/OS
+.DS_Store
+*.swp
