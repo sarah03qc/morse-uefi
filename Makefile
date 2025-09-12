@@ -3,6 +3,7 @@
 #  - compila y enlaza BOOTX64.EFI
 #  - copia a \EFI\BOOT
 #  - arranca con QEMU + OVMF
+# - ahora incorpora audio QEMU
 
 # rutas de proyecto
 SRC_DIR      := src
@@ -24,9 +25,15 @@ EFI_FILE     := $(OUT_DIR)/$(EFI_NAME)
 OVMF_VARS    := $(OUT_DIR)/OVMF_VARS.fd
 
 # herramientas
-NASM         := nasm
-LINK         := lld-link
-QEMU         := qemu-system-x86_64
+NASM := nasm
+LINK := lld-link
+QEMU  := qemu-system-x86_64
+
+# audio QEMU
+AUDIO_BACKEND ?= pa
+AUDIO_ID      := ad0
+QEMU_AUDIO    := -audiodev $(AUDIO_BACKEND),id=$(AUDIO_ID)
+QEMU_PCSPK    := -machine pcspk-audiodev=$(AUDIO_ID)
 
 # flags
 NASMFLAGS    := -f win64
@@ -125,6 +132,11 @@ execute:
 	  -drive if=pflash,format=raw,readonly=on,file="$(OVMF_CODE)" \
 	  -drive if=pflash,format=raw,file="$(OVMF_VARS)" \
 	  -drive file="$(DISK_IMAGE)",format=raw
+	  $(QEMU) -m 512M -cpu qemu64 \
+	  $(QEMU_AUDIO) $(QEMU_PCSPK) \
+	  -drive if=pflash,format=raw,readonly=on,file="$(OVMF_CODE)" \
+	  -drive if=pflash,format=raw,file="$(OVMF_VARS)" \
+	  -drive file="$(DISK_IMAGE)",format=raw
 
 # desmontar/soltar loop
 cleanup:
@@ -158,4 +170,3 @@ help:
 	@echo "Tips:"
 	@echo "  make remount compile execute"
 	@echo "  make execute OVMF_CODE=/ruta/OVMF_CODE_4M.fd OVMF_VARS_SRC=/ruta/OVMF_VARS_4M.fd"
-
