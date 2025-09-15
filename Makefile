@@ -129,10 +129,6 @@ execute:
 	@echo "OVMF_CODE: $(OVMF_CODE)"
 	@echo "OVMF_VARS: $(OVMF_VARS)"
 	$(QEMU) -m 512M -cpu qemu64 \
-	  -drive if=pflash,format=raw,readonly=on,file="$(OVMF_CODE)" \
-	  -drive if=pflash,format=raw,file="$(OVMF_VARS)" \
-	  -drive file="$(DISK_IMAGE)",format=raw
-	  $(QEMU) -m 512M -cpu qemu64 \
 	  $(QEMU_AUDIO) $(QEMU_PCSPK) \
 	  -drive if=pflash,format=raw,readonly=on,file="$(OVMF_CODE)" \
 	  -drive if=pflash,format=raw,file="$(OVMF_VARS)" \
