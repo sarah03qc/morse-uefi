@@ -1,0 +1,4 @@
+2025-09-09 f8f516b UEFI NASM inicial: logramos desplegar 'Holis'
+2025-09-10 f2dacc5 Traductor morse basico y funcional agregado: solo muestra en pantalla (no sound yet)
+2025-09-12 1d5ddfe sonido incorporado
+2025-09-15 66491d6 Error de duplicacion corregido
